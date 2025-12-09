@@ -5,13 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Repositories\User\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     public function index()
     {
-        $users = User::get();
-
+        // $users = User::get();
+        $users = $this->userRepository->index();
         return view('users.index', compact('users'));
     }
 
@@ -39,8 +46,8 @@ class UserController extends Controller
             $validatedData['password'] = bcrypt($validatedData['password']);
         }
 
-        User::create($validatedData);
-
+        // User::create($validatedData);
+        $this->userRepository->create($validatedData);
         return redirect()->route('users.index');
     }
 
@@ -75,9 +82,9 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        $user = User::find($id);
-        $user->delete();
-
+        // $user = User::find($id);
+        // $user->delete();
+        $this->userRepository->delete($id);
         return redirect()->route('users.index')
             ->with('success', 'User deleted successfully.');
     }
