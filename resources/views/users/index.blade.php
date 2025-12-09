@@ -58,7 +58,7 @@
                                         <i class="bi bi-pencil-square"></i>Edit
                                     </a>
 
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                    <form action="{{ route('users.delete', $user->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
