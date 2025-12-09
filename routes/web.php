@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -89,5 +90,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/show/{user}', [UserController::class, 'show'])->name('users.show');
     Route::delete('users/{user}', [UserController::class, 'delete'])->name('users.delete');
 
+    //Role
+    Route::resource('roles', RoleController::class);
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
 
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::post('/roles/update/{role}', [RoleController::class, 'update'])->name('roles.update');
 });

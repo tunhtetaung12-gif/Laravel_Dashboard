@@ -9,6 +9,8 @@ use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\User\UserRepository;
+use App\Repositories\Role\RoleRepositoryInterface;
+use App\Repositories\Role\RoleRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(ProductRepositoryInterface::class, ProductRepository::class);
 
         $this->app->singleton(UserRepositoryInterface::class, UserRepository::class);
+
+        $this->app->singleton(RoleRepositoryInterface::class, RoleRepository::class);
 
     }
 }

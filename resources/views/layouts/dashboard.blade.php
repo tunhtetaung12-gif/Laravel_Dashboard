@@ -204,6 +204,13 @@
                 </li>
             @endcan
             <li>
+                <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                    <i class="bi bi-shield-lock"></i>
+                    <span>Roles</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
                     <i class="bi bi-box-seam"></i>
                     <span>Products</span>
