@@ -61,8 +61,7 @@
                     <select name="gender" class="form-select">
                         <option value="">Select gender</option>
                         <option value="male" {{ old('gender', $user->gender) == 'male' ? 'selected' : '' }}>Male</option>
-                        <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }}>Female
-                        </option>
+                        <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }}>Female</option>
                     </select>
                 </div>
 
