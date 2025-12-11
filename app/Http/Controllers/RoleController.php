@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Role\RoleRepositoryInterface;
-
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Requests\RoleUpdateRequest;
+use Spatie\Permission\Models\Permission;
+
+
+use App\Repositories\Role\RoleRepositoryInterface;
+use App\Repositories\Permission\PermissionRepositoryInterface;
 
 class RoleController extends Controller
 {
     protected $roleRepository;
+    protected $permissionRepository;
 
-    public function __construct(RoleRepositoryInterface $roleRepository)
+    public function __construct(RoleRepositoryInterface $roleRepository, PermissionRepositoryInterface $permissionRepository)
     {
         $this->roleRepository = $roleRepository;
+        $this->permissionRepository = $permissionRepository;
     }
 
     public function index()
@@ -23,36 +30,56 @@ class RoleController extends Controller
 
     public function create()
     {
-        return view('roles.create');
+        $permissions = Permission::all();
+        return view('roles.create', compact('permissions'));
     }
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $data = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name'
+            'name' => 'required|string|unique:roles,name',
+            'permissions' => 'array',
+            'permissions.*' => 'exists:permissions,id',
         ]);
 
-        $this->roleRepository->create($data);
+        $this->roleRepository->store($data);
 
-        return redirect()->route('roles.index')->with('success', 'Role created successfully');
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
+
 
     public function edit($id)
     {
-        $role = $this->roleRepository->find($id);
-        return view('roles.edit', compact('role'));
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+
+        return view('roles.edit', compact('role', 'permissions'));
     }
 
-    public function update(Request $request, $id)
+
+    // public function updatePermissions(Request $request, Role $role)
+    // {
+    //     $request->validate([
+    //         'permissions' => 'array',
+    //         'permissions.*' => 'exists:permissions,id',
+    //     ]);
+
+    //     $permissions = Permission::whereIn('id', $request->permissions ?? [])->get();
+    //     $role->syncPermissions($permissions);
+
+    //     return redirect()->back()->with('success', 'Permissions updated successfully.');
+    // }
+
+    public function update(RoleUpdateRequest $request, $id)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $id
-        ]);
+        $validatedData = $request->validated();
 
-        $this->roleRepository->update($id, $data);
+        $this->roleRepository->update($validatedData, $id);
 
-        return redirect()->route('roles.index')->with('success', 'Role updated successfully');
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
+
 
     public function destroy($id)
     {

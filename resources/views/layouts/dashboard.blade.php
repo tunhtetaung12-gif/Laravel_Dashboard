@@ -194,21 +194,26 @@
         </div>
         <ul class="sidebar-menu">
             <li class="menu-title">Main Menu</li>
-            @can('dashboard')
-                <li>
-                    <a href="{{ route('dashboard.index') }}"
-                        class="{{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
-                        <i class="bi bi-speedometer2"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-            @endcan
+            <li>
+                <a href="{{ route('dashboard.index') }}"
+                    class="{{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
             <li>
                 <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
                     <i class="bi bi-shield-lock"></i>
                     <span>Roles</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('permissions.index') }}">
+                    <i class="bi bi-building-lock"></i> Permissions
+                </a>
+            </li>
+
 
             <li>
                 <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">

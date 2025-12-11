@@ -2,29 +2,52 @@
 
 namespace App\Repositories\Role;
 
-use App\Models\Role;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+
 
 class RoleRepository implements RoleRepositoryInterface
 {
     public function all()
     {
-        return Role::orderBy('id')->get();
+        return Role::with('permissions')->orderBy('id')->get();
     }
 
     public function find($id)
     {
-        return Role::findOrFail($id);
+        return Role::find($id);
     }
 
-    public function create(array $data)
+    public function create($data)
     {
         return Role::create($data);
     }
 
-    public function update($id, array $data)
+    public function update($validatedData, $id)
     {
-        $role = Role::findOrFail($id);
-        $role->update($data);
+        // dd($id);
+        $role = Role::find($id);
+        // dd($role);
+        $role->update(['name' => $validatedData['name']]);
+
+        if (isset($validatedData['permissions'])) {
+            $permissions = Permission::whereIn('id', $validatedData['permissions'])->get();
+            $role->syncPermissions($permissions);
+        }else{
+            $role->syncPermissions([]);
+        }
+    }
+
+    public function store( $data)
+    {
+        $role = Role::create(['name' => $data['name']]);
+        if (isset($data['permissions'])) {
+            $permissions = Permission::whereIn('id', $data['permissions'])->get();
+            $role->syncPermissions($permissions);
+        }
+
         return $role;
     }
 
