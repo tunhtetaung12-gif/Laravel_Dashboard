@@ -28,6 +28,7 @@
                             <th>Phone</th>
                             <th>Address</th>
                             <th>Gender</th>
+                            <th>Role</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -41,6 +42,25 @@
                                 <td>{{ $user->phone ?? '-' }}</td>
                                 <td>{{ $user->address ?? '-' }}</td>
                                 <td>{{ $user->gender ?? '-' }}</td>
+                                {{-- <td>
+                                    @if ($user->roles->count() > 0)
+                                        @foreach ($user->roles as $role)
+                                            <span class="badge bg-info text-dark">
+                                                {{ $role->name }}
+                                            </span>
+                                        @endforeach
+                                    @else
+                                        <span class="badge bg-secondary">No Role</span>
+                                    @endif
+                                </td> --}}
+                                <td>
+                                    @if ($user->roles->count() > 0)
+                                        <span class="badge bg-info text-dark">{{ $user->roles->first()->name }}</span>
+                                    @else
+                                        <span class="badge bg-secondary">No Role</span>
+                                    @endif
+                                </td>
+
                                 <td>
                                     @if ($user->status === 1)
                                         <span class="badge bg-success">Active</span>

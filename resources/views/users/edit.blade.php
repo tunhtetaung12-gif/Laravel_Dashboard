@@ -61,9 +61,42 @@
                     <select name="gender" class="form-select">
                         <option value="">Select gender</option>
                         <option value="male" {{ old('gender', $user->gender) == 'male' ? 'selected' : '' }}>Male</option>
-                        <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }}>Female</option>
+                        <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }}>Female
+                        </option>
                     </select>
                 </div>
+
+                {{-- Roles --}}
+                {{-- <div class="mb-3">
+                    <label class="form-label">Assign Roles</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach ($roles as $role)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->name }}"
+                                    id="role-{{ $role->id }}"
+                                    {{ $user->roles->pluck('name')->contains($role->name) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="role-{{ $role->id }}">
+                                    {{ $role->name }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div> --}}
+
+                <div class="mb-3">
+                    <label class="form-label">Assign Role</label>
+                    <select name="role" class="form-select">
+                        <option value="">-- Select Role --</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->name }}"
+                                {{ $user->roles->pluck('name')->contains($role->name) ? 'selected' : '' }}>
+                                {{ $role->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+
 
                 {{-- Status --}}
                 <div class="mb-3">

@@ -50,6 +50,20 @@
                     </tr>
 
                     <tr>
+                        <th>Roles</th>
+                        <td>
+                            @if ($user->roles->count() > 0)
+                                @foreach ($user->roles as $role)
+                                    <span class="badge bg-info text-dark">{{ $role->name }}</span>
+                                @endforeach
+                            @else
+                                <span class="badge bg-secondary">No Role</span>
+                            @endif
+                        </td>
+                    </tr>
+
+
+                    <tr>
                         <th>Status</th>
                         <td>
                             @if ($user->status === 1)
