@@ -21,7 +21,7 @@
                 @csrf
                 <div class="card-body">
                     <label for="name" class="form-label">Name :</label>
-                    <input type="text" name="name" placeholder="Enter Product Name"
+                    <input type="text" name="name" placeholder="Enter User Name"
                         class="form-control mb-2 @error('name') is-invalid @enderror">
                     @error('name')
                         <div class="invalid-feedback d-block">
@@ -33,8 +33,7 @@
                     <label for="email" class="form-label @error('email') is-invalid @enderror">
                         Email :
                     </label>
-                    <input type="text" name="email" placeholder="Enter Your Email"
-                        class="form-control mb-2">
+                    <input type="text" name="email" placeholder="Enter Your Email" class="form-control mb-2">
                     @error('email')
                         <div class="invalid-feedback d-block">
                             {{ $message }}
@@ -51,8 +50,8 @@
                         </div>
                     @enderror
                 </div>
-                 <div class="card-body">
-                    <label for="password_confirmation" class="form-label">Password :</label>
+                <div class="card-body">
+                    <label for="password_confirmation" class="form-label">Re-type Password :</label>
                     <input type="password" name="password_confirmation" placeholder="Enter Your Contirm password"
                         class="form-control mb-2 @error('description') is-invalid @enderror">
                     @error('price')
@@ -75,8 +74,7 @@
                     <label for="gender" class="form-label @error('gender') is-invalid @enderror">
                         Gender :
                     </label>
-                    <input type="text" name="gender" placeholder="Enter Your Gender"
-                        class="form-control mb-2">
+                    <input type="text" name="gender" placeholder="Enter Your Gender" class="form-control mb-2">
                     @error('gender')
                         <div class="invalid-feedback d-block">
                             {{ $message }}
@@ -87,8 +85,7 @@
                     <label for="phone" class="form-label @error('phone') is-invalid @enderror">
                         Phone :
                     </label>
-                    <input type="text" name="phone" placeholder="Enter Your Phone"
-                        class="form-control mb-2">
+                    <input type="text" name="phone" placeholder="Enter Your Phone" class="form-control mb-2">
                     @error('phone')
                         <div class="invalid-feedback d-block">
                             {{ $message }}
@@ -99,14 +96,37 @@
                     <label for="address" class="form-label @error('address') is-invalid @enderror">
                         Address :
                     </label>
-                    <input type="text" name="address" placeholder="Enter Your Address"
-                        class="form-control mb-2">
+                    <input type="text" name="address" placeholder="Enter Your Address" class="form-control mb-2">
                     @error('address')
                         <div class="invalid-feedback d-block">
                             {{ $message }}
                         </div>
                     @enderror
                 </div>
+
+                {{-- multiple role --}}
+                {{-- <div class="card-body">
+                    <label class="form-label">Assign Roles:</label>
+                    <select name="roles[]" class="form-select" multiple>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                        @endforeach
+                    </select>
+                </div> --}}
+
+                {{-- Singel role --}}
+                <div class="mb-3">
+                    <label class="form-label">Assign Role</label>
+                    <select name="role" class="form-select" required>
+                        <option value="">-- Select Role --</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->name }}" {{ old('role') == $role->name ? 'selected' : '' }}>
+                                {{ $role->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <div class="card-body">
                     <label for="" class="form-label me-3">Active or Expired:</label>
                     <input type="checkbox" class="form-check-input mb-2" name="status" role="switch" checked>
