@@ -28,6 +28,7 @@
                             <th>Phone</th>
                             <th>Address</th>
                             <th>Gender</th>
+                            <th>Role</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -41,6 +42,25 @@
                                 <td>{{ $user->phone ?? '-' }}</td>
                                 <td>{{ $user->address ?? '-' }}</td>
                                 <td>{{ $user->gender ?? '-' }}</td>
+                                {{-- <td>
+                                    @if ($user->roles->count() > 0)
+                                        @foreach ($user->roles as $role)
+                                            <span class="badge bg-info text-dark">
+                                                {{ $role->name }}
+                                            </span>
+                                        @endforeach
+                                    @else
+                                        <span class="badge bg-secondary">No Role</span>
+                                    @endif
+                                </td> --}}
+                                <td>
+                                    @if ($user->roles->count() > 0)
+                                        <span class="badge bg-info text-dark">{{ $user->roles->first()->name }}</span>
+                                    @else
+                                        <span class="badge bg-secondary">No Role</span>
+                                    @endif
+                                </td>
+
                                 <td>
                                     @if ($user->status === 1)
                                         <span class="badge bg-success">Active</span>
@@ -49,9 +69,26 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-secondary" disabled>
+                                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-secondary">
                                         <i class="bi bi-eye"></i> View
-                                    </button>
+                                    </a>
+
+
+                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-pencil-square"></i>Edit
+                                    </a>
+
+                                    <form action="{{ route('users.delete', $user->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to delete this user?');">
+                                            <i class="bi bi-trash"></i>Delete
+                                        </button>
+                                    </form>
+
                                 </td>
                             </tr>
                         @endforeach
