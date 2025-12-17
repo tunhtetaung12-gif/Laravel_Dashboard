@@ -15,8 +15,8 @@ class AuthController extends BaseController
         $credentials = $request->only(['email', 'password']);
         // dd($credentials);
 
-        if(!JWTAuth::attempt($credentials)) {
-           return $this->error("Your email and Password wrong", null, 401);
+        if (!JWTAuth::attempt($credentials)) {
+            return $this->error("Your email and Password wrong", null, 401);
         }
 
         $user = User::where('email', $credentials['email'])->first();
@@ -31,7 +31,7 @@ class AuthController extends BaseController
             'gender' => $user->gender,
         ];
 
-        $token = JWTAuth::customClaims($payload)->attempt([$user['email'], $credentials['password']]);
+        $token = JWTAuth::customClaims($payload)->attempt(['email' => $user['email'], 'password' => $credentials['password']]);
 
         return $this->success($token, "User Login Successfully", 200);
     }
