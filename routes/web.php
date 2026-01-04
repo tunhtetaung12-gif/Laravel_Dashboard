@@ -18,12 +18,12 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Static Route
-Route::get('/blogs', function(){
+Route::get('/blogs', function () {
     return "This is Blog Lists";
 });
 
 // Dynamic Route
-Route::get('/blogs/{id}', function($id){
+Route::get('/blogs/{id}', function ($id) {
     return "This is Blog Detail => $id";
 });
 
@@ -32,41 +32,40 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-// Redirect Route
-Route::get('/tpp', function(){
-    return redirect()->route('dashboard.tpp');
-});
-
-
-// Group Route
-Route::prefix('/backend')->group(function(){
-    Route::get('/admin', function(){
-        return "This is Admin User";
-    })->name('admin');
-
-    Route::get('/students', function(){
-        return "This is Student User";
-    });
-
-    Route::get('/students/{id}', function($id){
-        return "This is student details => $id";
-    });
-
-    Route::get('/teachers', function(){
+    // Redirect Route
+    Route::get('/tpp', function () {
         return redirect()->route('dashboard.tpp');
     });
 
-});
 
-// Route::get('/articles', function(){
-//     return view('articles.index');
-// });
+    // Group Route
+    Route::prefix('/backend')->group(function () {
+        Route::get('/admin', function () {
+            return "This is Admin User";
+        })->name('admin');
+
+        Route::get('/students', function () {
+            return "This is Student User";
+        });
+
+        Route::get('/students/{id}', function ($id) {
+            return "This is student details => $id";
+        });
+
+        Route::get('/teachers', function () {
+            return redirect()->route('dashboard.tpp');
+        });
+    });
+
+    // Route::get('/articles', function(){
+    //     return view('articles.index');
+    // });
 
 
     Route::get('/articles', [ArticleController::class, 'index']);
 
     // Categories
-    Route::get('/categories', [CategoryController::class,'index'])->name('categories.index');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
     Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
@@ -85,4 +84,10 @@ Route::prefix('/backend')->group(function(){
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+    Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('/users/update/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::get('/users/show/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::delete('users/{user}', [UserController::class, 'delete'])->name('users.delete');
+
+
 });
