@@ -33,6 +33,9 @@ class AuthController extends BaseController
 
         $token = JWTAuth::customClaims($payload)->attempt(['email' => $user['email'], 'password' => $credentials['password']]);
 
-        return $this->success($token, "User Login Successfully", 200);
+        $payload["accessToken"] = $token;
+        $payload["role"] = 'admin';
+
+        return $this->success($payload, "User Login Successfully", 200);
     }
 }

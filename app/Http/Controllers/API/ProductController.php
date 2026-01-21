@@ -13,10 +13,20 @@ class ProductController extends BaseController
 {
     public function index()
     {
-        $products = Product::with('category')->get();
+        $limit = request()->get('limit', 10);
+        $search = request()->get('search', "");
+        $products = Product::with('category')
+    ->when($search, function ($query) use ($search) {
+        $query->where('name', 'like', "%{$search}%");
+    })
+    ->orderBy('id', 'desc')
+    ->paginate($limit);
 
+    $total = Product::all()->count();
+    $body['total'] = $total;
+    $body['data'] =  ProductResource::collection($products);
         return $this->success(
-            ProductResource::collection($products),
+           $body,
             "Products retrieved successfully",
             200
         );
@@ -45,7 +55,7 @@ class ProductController extends BaseController
             'price'       => 'required|integer',
             'image'       => 'required|image|mimes:jpg,jpeg,png',
             'category_id' => 'required|exists:categories,id',
-            'status'      => 'nullable|boolean',
+            'status'      => 'required',
         ]);
 
         if ($validation->fails()) {
@@ -111,7 +121,7 @@ class ProductController extends BaseController
             'description' => $request->description,
             'price'       => $request->price,
             'category_id' => $request->category_id,
-            'status'      => $request->has('status') ? true : false,
+            'status'      => $request->status,
         ]);
 
         return $this->success(

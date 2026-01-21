@@ -13,7 +13,7 @@ class CategoryController extends BaseController
 {
     public function index()
     {
-        $categories = Category::get();
+        $categories = Category::orderby('id', 'desc')->get();
 
         $result = CategoryResource::collection($categories);
         return $this->success($result, "Categories Retireved Successfully", 200);
@@ -32,22 +32,22 @@ class CategoryController extends BaseController
     {
         $validation = Validator::make($request->all(), [
             'name' => 'required|string',
-            'image' => 'required',
+            // 'image' => 'required',
         ]);
 
         if ($validation->fails()) {
             return $this->error("Validation Error", $validation->errors(), 422);
         }
 
-        if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
+        // if ($request->hasFile('image')) {
+        //     $imageName = time() . '.' . $request->image->extension();
 
-            $request->image->move(public_path('categoryImages'), $imageName);
-        }
+        //     $request->image->move(public_path('categoryImages'), $imageName);
+        // }
 
         $category = Category::create([
             'name' => $request->name,
-            'image' => $imageName,
+            'image' => "s",
         ]);
 
 
